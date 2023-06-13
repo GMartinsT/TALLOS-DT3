@@ -6,7 +6,7 @@ import { Session, SessionSchema } from './schemas/session.schema';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Session.name, schema: SessionSchema }]),
+    MongooseModule.forFeature([{ name: 'Session', schema: SessionSchema }]),
   ],
   controllers: [SessionsController],
   providers: [SessionsService],

@@ -8,7 +8,7 @@ export class Theater {
     @Prop({ required: true })
     theaterId: number;
 
-    @Prop({ required: true })
+    @Prop({ required: true, type: Object })
     location: object;
 }
 

@@ -38,7 +38,7 @@ export class Movie {
   @Prop({ required: true })
   rated: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, type: Object })
   awards: object;
 
   @Prop({ required: true })
@@ -47,7 +47,7 @@ export class Movie {
   @Prop({ required: true })
   year: number;
 
-  @Prop({ required: true })
+  @Prop({ required: true, type: Object })
   imdb: object;
 
   @Prop({ required: true, type: [String] })
@@ -56,7 +56,7 @@ export class Movie {
   @Prop({ required: true })
   type: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, type: Object})
   tomatoes: object;
 }
 

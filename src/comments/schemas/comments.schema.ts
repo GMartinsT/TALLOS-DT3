@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, ObjectId } from 'mongoose';
+import { Document, ObjectId, SchemaTypes } from 'mongoose';
 
 export type CommentDocument = Comment & Document;
 
@@ -11,7 +11,7 @@ export class Comment {
   @Prop({ required: true })
   email: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, type: SchemaTypes.ObjectId })
   movie_id: ObjectId;
 
   @Prop({ required: true })

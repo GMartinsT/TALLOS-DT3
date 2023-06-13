@@ -6,7 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: CommentsModule.name, schema: CommentSchema }]),
+    MongooseModule.forFeature([{ name: 'Comment', schema: CommentSchema }]),
   ],
   controllers: [
     CommentController
