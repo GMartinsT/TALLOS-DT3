@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, UseGuards } from '@nestjs/common';
 import { TheatersService } from './theaters.service';
 import { Theater } from './schemas/theaters.schema';
+import { JwtAuthGuard } from 'src/auth/utils/auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('theaters')
 export class TheatersController {
   constructor(private theatersService: TheatersService) {}

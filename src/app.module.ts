@@ -7,6 +7,8 @@ import { MongooseModule } from '@nestjs/mongoose'
 import { CommentsModule } from './comments/comments.module';
 import { TheatersModule } from './theaters/theaters.module';
 import { SessionsModule } from './session/sessions.module';
+import { JwtModule } from '@nestjs/jwt';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -16,6 +18,11 @@ import { SessionsModule } from './session/sessions.module';
     CommentsModule,
     TheatersModule,
     SessionsModule,
+    AuthModule,
+    JwtModule.register({
+      secret: 'secretkey',
+      signOptions: { expiresIn: '24h' },
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
