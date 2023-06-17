@@ -5,6 +5,9 @@ import { User } from '../users/schemas/user.schema';
 import { Session, SessionDocument } from '../session/schemas/session.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+import * as bcrypt from 'bcrypt';
+import { SessionsService } from 'src/session/sessions.service';
+
 
 @Injectable()
 export class AuthService {
@@ -12,6 +15,7 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     @InjectModel(Session.name) private readonly sessionModel: Model<SessionDocument>,
+    private readonly sessionsService: SessionsService
   ) {}
 
   async validateUser(email: string, password: string): Promise<User | null> {
@@ -19,7 +23,7 @@ export class AuthService {
     console.log('User:', user);
     console.log('Password:', password);
 
-    if (user && await user.password === password) {
+    if (user && await bcrypt.compare(password, user.password)) {
       return user;
     }
     return null;
@@ -34,12 +38,11 @@ export class AuthService {
   }
 
   async generateAccessToken(user: User): Promise<string> {
-    const payload = { email: user.email, name: user.name, _id: user._id };
+    const payload = {name: user.name, email: user.email, _id: user._id}
     const token = await this.jwtService.signAsync(payload);
 
-    const session = new this.sessionModel({ user_id: user._id, jwt: token });
-    await session.save();
-
+    const session = await this.sessionsService.create({ user_id: user._id, jwt: token });
+    console.log(session)
     return token;
   }
 }
