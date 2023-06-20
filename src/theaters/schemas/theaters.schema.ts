@@ -7,7 +7,7 @@ export type TheaterDocument = Theater & Document;
 @Schema()
 export class Theater {
   @ApiProperty({ example: 1, description: 'ID do teatro' })
-  @Prop({ required: true })
+  @Prop({ required: true, unique: true })
   theaterId: number;
 
   @ApiProperty({ example: { lat: 123.456, long: -12.345 }, description: 'Localização do teatro' })

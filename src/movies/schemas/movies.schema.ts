@@ -27,7 +27,7 @@ export class Movie {
   poster: string;
 
   @ApiProperty({ example: 'Movie Title', description: 'Título do filme' })
-  @Prop({ required: true })
+  @Prop({ required: true, unique: true })
   title: string;
 
   @ApiProperty({ example: 'The full plot of the movie', description: 'Descrição completa do enredo do filme' })
