@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { Session, SessionDocument } from './schemas/session.schema';
 
 @Injectable()
@@ -14,8 +14,12 @@ export class SessionsService {
     return newSession.save();
   }
 
-  async findByUserId(user_id: string): Promise<Session[]> {
-    return this.sessionModel.find({ user_id }).exec();
+  async update(session: SessionDocument): Promise<SessionDocument> {
+    return this.sessionModel.findByIdAndUpdate(session._id, session, { new: true }).exec();
+  }
+
+  async findByUserId(user_id: ObjectId): Promise<SessionDocument> {
+    return this.sessionModel.findOne({ user_id }).exec();
   }
 
   async findByJwt(jwt: string): Promise<Session> {
