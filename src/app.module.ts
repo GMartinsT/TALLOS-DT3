@@ -1,8 +1,6 @@
 import { MoviesModule } from './movies/movies.module';
 import { UsersModule } from './users/users.module';
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose'
 import { CommentsModule } from './comments/comments.module';
 import { TheatersModule } from './theaters/theaters.module';
@@ -24,7 +22,7 @@ import { AuthModule } from './auth/auth.module';
       signOptions: { expiresIn: '24h' },
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule { }
