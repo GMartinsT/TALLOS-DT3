@@ -16,7 +16,8 @@ export class AuthController {
     }
 
     const accessToken = await this.authService.generateAccessToken(user);
+    const session = await this.authService.createOrUpdateSession(user, accessToken)
 
-    return { access_token: accessToken };
+    return { access_token: accessToken, session: session };
   }
 }

@@ -16,7 +16,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     @InjectModel(Session.name) private readonly sessionModel: Model<SessionDocument>,
     private readonly sessionsService: SessionsService
-  ) {}
+  ) { }
 
   async validateUser(email: string, password: string): Promise<User | null> {
     const user = await this.usersService.findByEmail(email);
@@ -38,11 +38,21 @@ export class AuthService {
   }
 
   async generateAccessToken(user: User): Promise<string> {
-    const payload = {name: user.name, email: user.email, _id: user._id}
+    const payload = { name: user.name, email: user.email, _id: user._id }
     const token = await this.jwtService.signAsync(payload);
-
-    const session = await this.sessionsService.create({ user_id: user._id, jwt: token });
-    console.log(session)
     return token;
+  }
+
+  async createOrUpdateSession(user: User, token: string): Promise<Session> {
+    const existingSession = await this.sessionsService.findByUserId(user._id)
+
+    if(existingSession) {
+      existingSession.jwt = token;
+      await this.sessionsService.update(existingSession);
+      return existingSession
+    } else {
+      const session = await this.sessionsService.create({ user_id: user._id, jwt: token})
+      return session
+    }
   }
 }
