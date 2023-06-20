@@ -2,9 +2,12 @@ import { Controller, Get, Post, Put, Delete, Param, Body, UseGuards } from '@nes
 import { TheatersService } from './theaters.service';
 import { Theater } from './schemas/theaters.schema';
 import { JwtAuthGuard } from 'src/auth/utils/auth.guard';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @UseGuards(JwtAuthGuard)
 @Controller('theaters')
+@ApiBearerAuth()
+@ApiTags('Theaters')
 export class TheatersController {
   constructor(private theatersService: TheatersService) {}
 

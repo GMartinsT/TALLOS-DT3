@@ -3,9 +3,12 @@ import { MoviesService } from './movies.service';
 import { CreateMovieDto, UpdateMovieDto } from './dto/movies.dto';
 import { Movie } from './schemas/movies.schema';
 import { JwtAuthGuard } from 'src/auth/utils/auth.guard';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @UseGuards(JwtAuthGuard)
 @Controller('movies')
+@ApiBearerAuth()
+@ApiTags('Movies')
 export class MoviesController {
     constructor(private readonly moviesService: MoviesService) { }
 

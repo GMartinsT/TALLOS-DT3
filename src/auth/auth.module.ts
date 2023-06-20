@@ -6,7 +6,7 @@ import { AuthController } from './auth.controller';
 import { SessionsModule } from 'src/session/sessions.module';
 import { JwtStrategy } from './utils/jwt.strategy';
 import { Session, SessionSchema } from 'src/session/schemas/session.schema';
-import { jwtConstants } from './utils/aut.constants';
+import { jwtConstants } from './utils/auth.constants';
 import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
