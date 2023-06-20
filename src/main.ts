@@ -6,8 +6,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
-    .setTitle('Nome da API')
-    .setDescription('Descrição da API')
+    .setTitle('API DT3')
+    .setDescription('API de filmes para consumir o banco de dados do TallosFlix')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
