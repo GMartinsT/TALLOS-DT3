@@ -5,7 +5,7 @@ import { User } from '../users/schemas/user.schema';
 import { Session, SessionDocument } from '../session/schemas/session.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { SessionsService } from 'src/session/sessions.service';
 
 
