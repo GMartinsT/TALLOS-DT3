@@ -2,7 +2,7 @@ import { Controller, Get, Post, Put, Delete, Param, Body, UseGuards } from '@nes
 import { MoviesService } from './movies.service';
 import { CreateMovieDto, UpdateMovieDto } from './dto/movies.dto';
 import { Movie } from './schemas/movies.schema';
-import { JwtAuthGuard } from 'src/auth/utils/auth.guard';
+import { JwtAuthGuard } from '../auth/utils/auth.guard';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @UseGuards(JwtAuthGuard)
