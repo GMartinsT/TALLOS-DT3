@@ -3,7 +3,7 @@ import { TheatersService } from './theaters.service';
 import { Theater } from './schemas/theaters.schema';
 
 
-describe('UserService', () => {
+describe('TheatersService', () => {
     let theatersService: TheatersService;
 
     beforeEach(async () => {
