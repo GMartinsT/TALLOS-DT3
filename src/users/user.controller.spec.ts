@@ -1,9 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
-import { UpdateUserDto } from './dto/user.dto';
 import { User } from './schemas/user.schema';
-import { Types } from 'mongoose';
 
 describe('UsersController', () => {
     let usersController: UsersController;
@@ -31,22 +29,22 @@ describe('UsersController', () => {
 
     describe('findAll', () => {
         it('should return an array of users', async () => {
-          const result = await usersController.findAll();
-          jest.spyOn(usersService, 'findAll').mockResolvedValue(result);
-    
-          expect(result).toEqual([User]);
-          expect(typeof result).toEqual('object');
-          expect(usersService.findAll).toHaveBeenCalledTimes(1);
+            const result = await usersController.findAll();
+            jest.spyOn(usersService, 'findAll').mockResolvedValue(result);
+
+            expect(result).toEqual([User]);
+            expect(typeof result).toEqual('object');
+            expect(usersService.findAll).toHaveBeenCalledTimes(1);
         });
-    
+
         it('should throw an exception', async () => {
-          jest
-            .spyOn(usersService, 'findAll')
-            .mockRejectedValueOnce(new Error('!ERRO!'));
-    
-          await expect(usersController.findAll()).rejects.toThrowError('!ERRO!');
+            jest
+                .spyOn(usersService, 'findAll')
+                .mockRejectedValueOnce(new Error('!ERRO!'));
+
+            await expect(usersController.findAll()).rejects.toThrowError('!ERRO!');
         });
-      
+
     });
 
     describe('findOne', () => {

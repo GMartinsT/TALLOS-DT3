@@ -1,9 +1,8 @@
 import { Controller, Get, Post, Put, Delete, Param, Body, UseGuards } from '@nestjs/common';
 import { TheatersService } from './theaters.service';
 import { Theater } from './schemas/theaters.schema';
-import { JwtAuthGuard } from 'src/auth/utils/auth.guard';
+import { JwtAuthGuard } from '../auth/utils/auth.guard';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Movie } from 'src/movies/schemas/movies.schema';
 
 @UseGuards(JwtAuthGuard)
 @Controller('theaters')
