@@ -29,7 +29,7 @@ describe('TheatersService', () => {
     });
 
     describe('findAll', () => {
-        it('deve retornar uma lista de usuários', async () => {
+        it('deve retornar uma lista de cinemas', async () => {
             const result = await theatersService.findAll();
             
             expect(result).toEqual([Theater]);
@@ -45,7 +45,7 @@ describe('TheatersService', () => {
     });
 
     describe('findOne', () => {
-        it('deve retornar os dados do usuário', async () => {
+        it('deve retornar os dados de um cinema', async () => {
             const id = '123id';
             const result = await theatersService.findOne(id);
             expect(result).toEqual(Theater);
@@ -63,7 +63,7 @@ describe('TheatersService', () => {
     });
 
     describe('create', () => {
-        it('deve criar um novo usuário', async () => {
+        it('deve criar um novo cinema', async () => {
             const body = {
                 theaterId: 1234,
                 location: {
@@ -88,7 +88,7 @@ describe('TheatersService', () => {
             expect(theatersService.create).toHaveBeenCalledWith(body);
         });
 
-        it('should throw an exception', async () => {
+        it('deve lançar uma exeção', async () => {
             const body = {
                 theaterId: 1234,
                 location: {
@@ -116,7 +116,7 @@ describe('TheatersService', () => {
     });
 
     describe('update', () => {
-        it('should update a user by id', async () => {
+        it('deve atualizar um cinema', async () => {
             const body = {
                 theaterId: 1234,
                 location: {
@@ -170,14 +170,14 @@ describe('TheatersService', () => {
     });
 
     describe('remove', () => {
-        it('should remove a user by id', async () => {
+        it('deve excluir um cinema', async () => {
             const id = '123id';
             const result = await theatersService.remove(id)
             expect(result).toEqual(true);
             expect(theatersService.remove).toHaveBeenCalledTimes(1);
         });
 
-        it('should throw an exception', async () => {
+        it('deve lançar uma exeção', async () => {
             const id = '123id';
             jest
                 .spyOn(theatersService, 'remove')

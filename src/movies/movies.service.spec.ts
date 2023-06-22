@@ -26,7 +26,7 @@ describe('MoviesService', () => {
       });
 
     describe('findAllMovies', () => {
-        it('should return an array of users', async () => {
+        it('deve retornar uma lista de filmes', async () => {
             const result = await moviesService.findAll();
             jest.spyOn(moviesService, 'findAll').mockResolvedValue(result);
 
@@ -35,7 +35,7 @@ describe('MoviesService', () => {
             expect(moviesService.findAll).toHaveBeenCalledTimes(1);
         });
 
-        it('should throw an exception', async () => {
+        it('deve lançar uma exeção', async () => {
             jest
                 .spyOn(moviesService, 'findAll')
                 .mockRejectedValueOnce(new Error('!ERRO!'));
@@ -46,7 +46,7 @@ describe('MoviesService', () => {
     });
 
     describe('findMovieById', () => {
-        it('deve retornar os dados do usuário', async () => {
+        it('deve retornar os dados do filme', async () => {
             const id = '123id';
             const result = await moviesService.findById(id);
             expect(result).toEqual(Movie);
@@ -64,7 +64,7 @@ describe('MoviesService', () => {
     });
 
     describe('createMovie', () => {
-        it('should create a new user', async () => {
+        it('deve criar um novo filme', async () => {
             const body = {
                 plot: "A group of bandits stage a brazen train hold-up, only to find a determined posse hot on their heels.",
                 genres: [
@@ -129,7 +129,7 @@ describe('MoviesService', () => {
             expect(moviesService.create).toHaveBeenCalledWith(body);
         });
 
-        it('should throw an exception', async () => {
+        it('deve lançar uma exeção', async () => {
             const body = {
                 plot: "A group of bandits stage a brazen train hold-up, only to find a determined posse hot on their heels.",
                 genres: [
@@ -197,7 +197,7 @@ describe('MoviesService', () => {
     });
 
     describe('updateMovie', () => {
-        it('should update a user by id', async () => {
+        it('deve atualizar um filme', async () => {
             const body = {
                 plot: "A group of bandits stage a brazen train hold-up, only to find a determined posse hot on their heels.",
                 genres: [
@@ -262,7 +262,7 @@ describe('MoviesService', () => {
             expect(moviesService.update).toHaveBeenCalledTimes(1);
         });
 
-        it('should throw an exception', async () => {
+        it('deve lançar uma exeção', async () => {
             const body = {
                 plot: "A group of bandits stage a brazen train hold-up, only to find a determined posse hot on their heels.",
                 genres: [
@@ -331,14 +331,14 @@ describe('MoviesService', () => {
     });
 
     describe('remove', () => {
-        it('should remove a user by id', async () => {
+        it('deve excluir um filme', async () => {
             const id = '123id';
             const result = await moviesService.delete(id)
             expect(result).toEqual(true);
             expect(moviesService.delete).toHaveBeenCalledTimes(1);
         });
 
-        it('should throw an exception', async () => {
+        it('deve lançar uma exeção', async () => {
             const id = '123id';
             jest
                 .spyOn(moviesService, 'delete')

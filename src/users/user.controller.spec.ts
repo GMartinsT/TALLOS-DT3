@@ -28,7 +28,7 @@ describe('UsersController', () => {
     });
 
     describe('findAll', () => {
-        it('should return an array of users', async () => {
+        it('deve retornar uma lista de usuários', async () => {
             const result = await usersController.findAll();
             jest.spyOn(usersService, 'findAll').mockResolvedValue(result);
 
@@ -37,7 +37,7 @@ describe('UsersController', () => {
             expect(usersService.findAll).toHaveBeenCalledTimes(1);
         });
 
-        it('should throw an exception', async () => {
+        it('deve lançar uma exceção', async () => {
             jest
                 .spyOn(usersService, 'findAll')
                 .mockRejectedValueOnce(new Error('!ERRO!'));
@@ -66,7 +66,7 @@ describe('UsersController', () => {
     });
 
     describe('create', () => {
-        it('should create a new user', async () => {
+        it('deve criar um novo usuário', async () => {
             const body = {
                 name: 'Teste1',
                 email: 'teste1@mail.com',
@@ -78,7 +78,7 @@ describe('UsersController', () => {
             expect(usersService.create).toHaveBeenCalledWith(body);
         });
 
-        it('should throw an exception', async () => {
+        it('deve lançar uma exeção', async () => {
             const body = {
                 name: 'Teste',
                 email: 'teste@gmail.com',
@@ -93,7 +93,7 @@ describe('UsersController', () => {
     });
 
     describe('update', () => {
-        it('should update a user by id', async () => {
+        it('deve atualizar um usuário', async () => {
             const body = {
                 name: 'Teste',
                 email: 'teste@gmail.com',
@@ -105,7 +105,7 @@ describe('UsersController', () => {
             expect(usersService.update).toHaveBeenCalledTimes(1);
         });
 
-        it('should throw an exception', async () => {
+        it('deve lançar uma exeção', async () => {
             const body = {
                 name: 'Teste',
                 email: 'teste@gmail.com',
@@ -121,14 +121,14 @@ describe('UsersController', () => {
     });
 
     describe('remove', () => {
-        it('should remove a user by id', async () => {
+        it('deve excluir um usuário', async () => {
             const id = '123id';
             const result = await usersService.remove(id)
             expect(result).toEqual(true);
             expect(usersService.remove).toHaveBeenCalledTimes(1);
         });
 
-        it('should throw an exception', async () => {
+        it('deve lançar uma exeção', async () => {
             const id = '123id';
             jest
                 .spyOn(usersService, 'remove')

@@ -3,7 +3,7 @@ import { TheatersController } from './theaters.controller';
 import { TheatersService } from './theaters.service';
 import { Theater } from './schemas/theaters.schema';
 
-describe('UsersController', () => {
+describe('TheatersController', () => {
     let theatersController: TheatersController;
     let theatersService: TheatersService;
 
@@ -28,7 +28,7 @@ describe('UsersController', () => {
     });
 
     describe('findAll', () => {
-        it('should return an array of users', async () => {
+        it('deve retornar uma lista de cinemas', async () => {
             const result = await theatersController.findAll();
             jest.spyOn(theatersService, 'findAll').mockResolvedValue(result);
 
@@ -37,7 +37,7 @@ describe('UsersController', () => {
             expect(theatersService.findAll).toHaveBeenCalledTimes(1);
         });
 
-        it('should throw an exception', async () => {
+        it('deve lançar uma exeção', async () => {
             jest
                 .spyOn(theatersService, 'findAll')
                 .mockRejectedValueOnce(new Error('!ERRO!'));
@@ -48,7 +48,7 @@ describe('UsersController', () => {
     });
 
     describe('findOne', () => {
-        it('deve retornar os dados do usuário', async () => {
+        it('deve retornar os dados de um cinema', async () => {
             const id = '123id';
             const result = await theatersController.findOne(id);
             expect(result).toEqual(Theater);
@@ -66,7 +66,7 @@ describe('UsersController', () => {
     });
 
     describe('create', () => {
-        it('should create a new user', async () => {
+        it('deve criar um novo cinema', async () => {
             const body = {
                 theaterId: 1234,
                 location: {
@@ -91,7 +91,7 @@ describe('UsersController', () => {
             expect(theatersService.create).toHaveBeenCalledWith(body);
         });
 
-        it('should throw an exception', async () => {
+        it('deve lançar uma exeção', async () => {
             const body = {
                 theaterId: 1234,
                 location: {
@@ -119,7 +119,7 @@ describe('UsersController', () => {
     });
 
     describe('update', () => {
-        it('should update a user by id', async () => {
+        it('deve atualizar um cinema', async () => {
             const body = {
                 theaterId: 1234,
                 location: {
@@ -144,7 +144,7 @@ describe('UsersController', () => {
             expect(theatersService.update).toHaveBeenCalledTimes(1);
         });
 
-        it('should throw an exception', async () => {
+        it('deve lançar uma exeção', async () => {
             const body = {
                 theaterId: 1234,
                 location: {
@@ -173,14 +173,14 @@ describe('UsersController', () => {
     });
 
     describe('remove', () => {
-        it('should remove a user by id', async () => {
+        it('deve excluir um cinema', async () => {
             const id = '123id';
             const result = await theatersService.remove(id)
             expect(result).toEqual(true);
             expect(theatersService.remove).toHaveBeenCalledTimes(1);
         });
 
-        it('should throw an exception', async () => {
+        it('deve lançar uma exeção', async () => {
             const id = '123id';
             jest
                 .spyOn(theatersService, 'remove')
