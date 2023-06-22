@@ -26,7 +26,7 @@ describe('CommentService', () => {
     });
 
     describe('findAll', () => {
-        it('should return an array of users', async () => {
+        it('deve retornar uma lista de comentários', async () => {
             const result = await commentService.findAll();
             jest.spyOn(commentService, 'findAll').mockResolvedValue(result);
 
@@ -35,7 +35,7 @@ describe('CommentService', () => {
             expect(commentService.findAll).toHaveBeenCalledTimes(1);
         });
 
-        it('should throw an exception', async () => {
+        it('deve lançar uma exeção', async () => {
             jest
                 .spyOn(commentService, 'findAll')
                 .mockRejectedValueOnce(new Error('!ERRO!'));
@@ -46,7 +46,7 @@ describe('CommentService', () => {
     });
 
     describe('findOne', () => {
-        it('deve retornar os dados do usuário', async () => {
+        it('deve retornar os dados de um comntário', async () => {
             const id = '123id';
             const result = await commentService.findOne(id);
             expect(result).toEqual(Comment);
@@ -64,7 +64,7 @@ describe('CommentService', () => {
     });
 
     describe('create', () => {
-        it('should create a new user', async () => {
+        it('deve criar um novo comentário', async () => {
             const body = {
                 name: 'Teste1',
                 email: 'teste1@mail.com',
@@ -78,7 +78,7 @@ describe('CommentService', () => {
             expect(commentService.create).toHaveBeenCalledWith(body);
         });
 
-        it('should throw an exception', async () => {
+        it('deve lançar uma exeção', async () => {
             const body = {
                 name: 'Teste1',
                 email: 'teste1@mail.com',
@@ -95,7 +95,7 @@ describe('CommentService', () => {
     });
 
     describe('update', () => {
-        it('should update a user by id', async () => {
+        it('deve atualizar um comntário', async () => {
             const body = {
                 name: 'Teste1',
                 email: 'teste1@mail.com',
@@ -109,7 +109,7 @@ describe('CommentService', () => {
             expect(commentService.update).toHaveBeenCalledTimes(1);
         });
 
-        it('should throw an exception', async () => {
+        it('deve lançar uma exeção', async () => {
             const body = {
                 name: 'Teste1',
                 email: 'teste1@mail.com',
@@ -127,14 +127,14 @@ describe('CommentService', () => {
     });
 
     describe('remove', () => {
-        it('should remove a user by id', async () => {
+        it('deve excluir um comentário', async () => {
             const id = '123id';
             const result = await commentService.remove(id)
             expect(result).toEqual(true);
             expect(commentService.remove).toHaveBeenCalledTimes(1);
         });
 
-        it('should throw an exception', async () => {
+        it('deve lançar uma exeção', async () => {
             const id = '123id';
             jest
                 .spyOn(commentService, 'remove')
