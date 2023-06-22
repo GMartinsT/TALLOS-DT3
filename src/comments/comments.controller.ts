@@ -2,7 +2,7 @@ import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards } from '@nes
 import { CommentService } from './comments.service';
 import { Comment } from './schemas/comments.schema';
 import { CreateCommentDto, UpdateCommentDto } from './dto/comments.dto';
-import { JwtAuthGuard } from 'src/auth/utils/auth.guard';
+import { JwtAuthGuard } from '../auth/utils/auth.guard';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @UseGuards(JwtAuthGuard)
