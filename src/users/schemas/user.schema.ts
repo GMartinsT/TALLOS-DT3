@@ -20,6 +20,13 @@ export class User {
   @ApiProperty({ example: 'password123', description: 'Senha do usuário' })
   @Prop({ required: true })
   password: string;
+
+
+  constructor(User?: Partial<User>) {
+    this.name = User?.name;
+    this.email = User?.email;
+    this.password = User?.password;
+}
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Delete, Param, UseGuards } from '@nestjs/common';
 import { SessionsService } from './sessions.service';
 import { Session } from './schemas/session.schema';
-import { JwtAuthGuard } from 'src/auth/utils/auth.guard';
+import { JwtAuthGuard } from '../auth/utils/auth.guard';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @UseGuards(JwtAuthGuard)
