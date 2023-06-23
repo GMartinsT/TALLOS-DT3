@@ -10,9 +10,9 @@ services:
     restart: always
     tty: true
     networks:
-      - moviesdt3-api
+      - movies
     volumes:
       - .:/home/api
 networks:
-  movies-api:
+  movies:
     driver: bridge
