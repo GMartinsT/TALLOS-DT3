@@ -14,7 +14,7 @@ export class UsersService {
   }
 
   async findByEmail(email: string) {
-    return this.userModel.findOne({email}).exec()
+    return this.userModel.findOne({ email }).exec();
   }
 
   async findOne(id: string): Promise<User> {
@@ -24,12 +24,13 @@ export class UsersService {
   async create(user: CreateUserDto): Promise<User> {
     user.password = await bcrypt.hash(user.password, 10);
     const newUser = new this.userModel(user);
-    console.log("AAA", newUser)
     return await newUser.save();
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    return this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true }).exec();
+    return this.userModel
+      .findByIdAndUpdate(id, updateUserDto, { new: true })
+      .exec();
   }
 
   async remove(id: string): Promise<User> {

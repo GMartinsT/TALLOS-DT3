@@ -15,7 +15,9 @@ export class SessionsService {
   }
 
   async update(session: SessionDocument): Promise<SessionDocument> {
-    return this.sessionModel.findByIdAndUpdate(session._id, session, { new: true }).exec();
+    return this.sessionModel
+      .findByIdAndUpdate(session._id, session, { new: true })
+      .exec();
   }
 
   async findByUserId(user_id: ObjectId): Promise<SessionDocument> {

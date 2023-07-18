@@ -15,4 +15,4 @@ services:
       - .:/home/api
 networks:
   movies:
-    driver: bridge
+    external: true
