@@ -20,6 +20,11 @@ export class SessionsService {
       .exec();
   }
 
+  async findAll(page = 1, perPage = 10): Promise<Session[]> {
+    const skip = (page - 1) * perPage;
+    return this.sessionModel.find().skip(skip).limit(perPage).exec();
+  }
+
   async findByUserId(user_id: ObjectId): Promise<SessionDocument> {
     return this.sessionModel.findOne({ user_id }).exec();
   }

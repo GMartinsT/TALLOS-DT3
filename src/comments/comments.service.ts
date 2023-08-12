@@ -15,8 +15,9 @@ export class CommentService {
     return createdComment.save();
   }
 
-  async findAll(): Promise<Comment[]> {
-    return this.commentModel.find().exec();
+  async findAll(page = 1, perPage = 10): Promise<Comment[]> {
+    const skip = (page - 1) * perPage;
+    return this.commentModel.find().skip(skip).limit(perPage).exec();
   }
 
   async findOne(id: string): Promise<Comment> {
@@ -34,5 +35,9 @@ export class CommentService {
 
   async remove(id: string): Promise<Comment> {
     return this.commentModel.findByIdAndRemove(id).exec();
+  }
+
+  async getCommentsCount(): Promise<number> {
+    return this.commentModel.countDocuments().exec();
   }
 }

@@ -9,8 +9,9 @@ export class TheatersService {
     @InjectModel(Theater.name) private theaterModel: Model<TheaterDocument>,
   ) {}
 
-  async findAll(): Promise<Theater[]> {
-    return this.theaterModel.find().exec();
+  async findAll(page = 1, perPage = 10): Promise<Theater[]> {
+    const skip = (page - 1) * perPage;
+    return this.theaterModel.find().skip(skip).limit(perPage).exec();
   }
 
   async findOne(id: string): Promise<Theater> {
@@ -30,5 +31,9 @@ export class TheatersService {
 
   async remove(id: string): Promise<Theater> {
     return this.theaterModel.findByIdAndRemove(id).exec();
+  }
+
+  async getTheatersCount(): Promise<number> {
+    return this.theaterModel.countDocuments().exec();
   }
 }

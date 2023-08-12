@@ -5,6 +5,8 @@ import {
   Delete,
   Param,
   UseGuards,
+  Get,
+  Query,
 } from '@nestjs/common';
 import { SessionsService } from './sessions.service';
 import { Session } from './schemas/session.schema';
@@ -62,5 +64,27 @@ export class SessionsController {
   @Delete(':jwt')
   async removeByJwt(@Param('jwt') jwt: string): Promise<Session> {
     return this.sessionsService.removeByJwt(jwt);
+  }
+
+  @ApiOperation({ summary: 'Listar todas as sessões' })
+  @ApiResponse({
+    status: 200,
+    description: 'Sessoões retornadas com sucesso',
+    type: [Session],
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Não autorizado',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Sessões não encontradas',
+  })
+  @Get()
+  async findAll(
+    @Query('page') page = 1,
+    @Query('perPage') perPage = 10,
+  ): Promise<Session[]> {
+    return this.sessionsService.findAll(page, perPage);
   }
 }
