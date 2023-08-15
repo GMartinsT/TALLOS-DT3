@@ -1,20 +1,34 @@
-import { Controller, Get, Post, Put, Delete, Param, Body, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Param,
+  Body,
+  UseGuards,
+} from '@nestjs/common';
 import { TheatersService } from './theaters.service';
 import { Theater } from './schemas/theaters.schema';
 import { JwtAuthGuard } from '../auth/utils/auth.guard';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @UseGuards(JwtAuthGuard)
 @Controller('theaters')
 @ApiBearerAuth()
 @ApiTags('Theaters')
 export class TheatersController {
-  constructor(private theatersService: TheatersService) { }
+  constructor(private theatersService: TheatersService) {}
   @ApiOperation({ summary: 'Listar todos os cinemas' })
   @ApiResponse({
     status: 200,
     description: 'Cinemas retornados com sucesso',
-    type: [Theater]
+    type: [Theater],
   })
   @ApiResponse({
     status: 401,
@@ -33,7 +47,7 @@ export class TheatersController {
   @ApiResponse({
     status: 200,
     description: 'Cinema retornado com sucesso',
-    type: [Theater]
+    type: [Theater],
   })
   @ApiResponse({
     status: 401,
@@ -52,7 +66,7 @@ export class TheatersController {
   @ApiResponse({
     status: 201,
     description: 'cinema registrado com sucesso',
-    type: Theater
+    type: Theater,
   })
   @ApiResponse({
     status: 400,
@@ -75,7 +89,7 @@ export class TheatersController {
   @ApiResponse({
     status: 200,
     description: 'Cinema atualizado com sucesso',
-    type: Theater
+    type: Theater,
   })
   @ApiResponse({
     status: 400,
@@ -90,14 +104,17 @@ export class TheatersController {
     description: 'Usuário não encontrado',
   })
   @Put(':id')
-  async update(@Param('id') id: string, @Body() theater: Theater): Promise<Theater> {
+  async update(
+    @Param('id') id: string,
+    @Body() theater: Theater,
+  ): Promise<Theater> {
     return this.theatersService.update(id, theater);
   }
 
   @ApiOperation({ summary: 'Deletar um cinema' })
   @ApiResponse({
     status: 200,
-    description: 'Cinema deletado com sucesso'
+    description: 'Cinema deletado com sucesso',
   })
   @ApiResponse({
     status: 401,

@@ -7,13 +7,13 @@ import { LoginResponse } from './utils/login.response';
 @Controller('login')
 @ApiTags('Login')
 export class AuthController {
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) {}
 
   @ApiOperation({ summary: 'Realizar login' })
   @ApiResponse({
     status: 200,
     description: 'Usuário logado com sucesso',
-    type: LoginResponse
+    type: LoginResponse,
   })
   @ApiResponse({
     status: 400,
@@ -29,7 +29,10 @@ export class AuthController {
     }
 
     const accessToken = await this.authService.generateAccessToken(user);
-    const session = await this.authService.createOrUpdateSession(user, accessToken)
+    const session = await this.authService.createOrUpdateSession(
+      user,
+      accessToken,
+    );
 
     return { access_token: accessToken, session: session };
   }

@@ -8,15 +8,8 @@ import { Session, SessionSchema } from './schemas/session.schema';
   imports: [
     MongooseModule.forFeature([{ name: Session.name, schema: SessionSchema }]),
   ],
-  controllers: [
-    SessionsController
-  ],
-  providers: [
-    SessionsService
-  ],
-  exports: [
-    SessionsService,
-    MongooseModule
-  ]
+  controllers: [SessionsController],
+  providers: [SessionsService],
+  exports: [SessionsService, MongooseModule],
 })
 export class SessionsModule {}

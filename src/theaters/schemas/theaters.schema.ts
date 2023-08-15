@@ -10,7 +10,10 @@ export class Theater {
   @Prop({ required: true, unique: true })
   theaterId: number;
 
-  @ApiProperty({ example: { lat: 123.456, long: -12.345 }, description: 'Localização do teatro' })
+  @ApiProperty({
+    example: { lat: 123.456, long: -12.345 },
+    description: 'Localização do teatro',
+  })
   @Prop({ required: true, type: Object })
   location: object;
 }

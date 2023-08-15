@@ -130,7 +130,7 @@ describe('CommentController', () => {
     });
 
     describe('remove', () => {
-        it('deve excluirt um comentário', async () => {
+        it('deve excluir um comentário', async () => {
             const id = '123id';
             const result = await commentService.remove(id)
             expect(result).toEqual(true);

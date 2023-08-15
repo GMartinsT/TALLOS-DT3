@@ -24,7 +24,9 @@ export class MoviesService {
   }
 
   async update(id: string, updateMovieDto: UpdateMovieDto): Promise<Movie> {
-    return this.movieModel.findByIdAndUpdate(id, updateMovieDto, { new: true }).exec();
+    return this.movieModel
+      .findByIdAndUpdate(id, updateMovieDto, { new: true })
+      .exec();
   }
 
   async delete(id: string): Promise<Movie> {

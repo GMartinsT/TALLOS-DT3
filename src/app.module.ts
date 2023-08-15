@@ -1,7 +1,7 @@
 import { MoviesModule } from './movies/movies.module';
 import { UsersModule } from './users/users.module';
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose'
+import { MongooseModule } from '@nestjs/mongoose';
 import { CommentsModule } from './comments/comments.module';
 import { TheatersModule } from './theaters/theaters.module';
 import { SessionsModule } from './session/sessions.module';
@@ -25,4 +25,4 @@ import { AuthModule } from './auth/auth.module';
   controllers: [],
   providers: [],
 })
-export class AppModule { }
+export class AppModule {}

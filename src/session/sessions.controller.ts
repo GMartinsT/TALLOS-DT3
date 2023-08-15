@@ -1,21 +1,33 @@
-import { Controller, Post, Body, Delete, Param, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Delete,
+  Param,
+  UseGuards,
+} from '@nestjs/common';
 import { SessionsService } from './sessions.service';
 import { Session } from './schemas/session.schema';
 import { JwtAuthGuard } from '../auth/utils/auth.guard';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @UseGuards(JwtAuthGuard)
 @Controller('sessions')
 @ApiBearerAuth()
 @ApiTags('Sessions')
 export class SessionsController {
-  constructor(private sessionsService: SessionsService) { }
+  constructor(private sessionsService: SessionsService) {}
 
   @ApiOperation({ summary: 'Registrar uma nova sessção' })
   @ApiResponse({
     status: 201,
     description: 'Sessão registrado com sucesso',
-    type: Session
+    type: Session,
   })
   @ApiResponse({
     status: 400,
@@ -37,7 +49,7 @@ export class SessionsController {
   @ApiOperation({ summary: 'Deletar uma sessão' })
   @ApiResponse({
     status: 200,
-    description: 'Sessão deletada com sucesso'
+    description: 'Sessão deletada com sucesso',
   })
   @ApiResponse({
     status: 401,

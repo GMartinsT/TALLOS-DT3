@@ -4,15 +4,15 @@ services:
   api:
     build: .
     entrypoint: sh ./.docker/entrypoint.sh
-    container_name: movies-api
+    container_name: moviesdt3-api
     ports:
-      - 3000:3000
+      - 3010:3000
     restart: always
     tty: true
     networks:
-      - movies-api
+      - movies
     volumes:
       - .:/home/api
 networks:
-  movies-api:
-    driver: bridge
+  movies:
+    external: true

@@ -6,11 +6,17 @@ export type MovieDocument = Movie & Document;
 
 @Schema()
 export class Movie {
-  @ApiProperty({ example: 'Three men hammer on an anvil and pass a bottle of beer around.', description: 'Descrição do enredo do filme' })
+  @ApiProperty({
+    example: 'Three men hammer on an anvil and pass a bottle of beer around.',
+    description: 'Descrição do enredo do filme',
+  })
   @Prop({ required: true })
   plot: string;
 
-  @ApiProperty({ example: ['Drama', 'Action'], description: 'Gêneros do filme' })
+  @ApiProperty({
+    example: ['Drama', 'Action'],
+    description: 'Gêneros do filme',
+  })
   @Prop({ required: true, type: [String] })
   genres: string[];
 
@@ -18,11 +24,17 @@ export class Movie {
   @Prop({ required: true })
   runtime: number;
 
-  @ApiProperty({ example: ['Charles Kayser', 'John Ott'], description: 'Elenco do filme' })
+  @ApiProperty({
+    example: ['Charles Kayser', 'John Ott'],
+    description: 'Elenco do filme',
+  })
   @Prop({ required: true, type: [String] })
   cast: string[];
 
-  @ApiProperty({ example: 'https://example.com/poster.jpg', description: 'URL do pôster do filme' })
+  @ApiProperty({
+    example: 'https://example.com/poster.jpg',
+    description: 'URL do pôster do filme',
+  })
   @Prop({ required: true })
   poster: string;
 
@@ -30,19 +42,31 @@ export class Movie {
   @Prop({ required: true, unique: true })
   title: string;
 
-  @ApiProperty({ example: 'The full plot of the movie', description: 'Descrição completa do enredo do filme' })
+  @ApiProperty({
+    example: 'The full plot of the movie',
+    description: 'Descrição completa do enredo do filme',
+  })
   @Prop({ required: true })
   fullplot: string;
 
-  @ApiProperty({ example: ['English', 'Spanish'], description: 'Idiomas do filme' })
+  @ApiProperty({
+    example: ['English', 'Spanish'],
+    description: 'Idiomas do filme',
+  })
   @Prop({ required: true, type: [String] })
   languages: string[];
 
-  @ApiProperty({ example: '2023-01-01', description: 'Data de lançamento do filme' })
+  @ApiProperty({
+    example: '2023-01-01',
+    description: 'Data de lançamento do filme',
+  })
   @Prop({ required: true, type: Date })
   released: Date;
 
-  @ApiProperty({ example: ['William K.L. Dickson', 'D.W. Griffith'], description: 'Diretores do filme' })
+  @ApiProperty({
+    example: ['William K.L. Dickson', 'D.W. Griffith'],
+    description: 'Diretores do filme',
+  })
   @Prop({ required: true, type: [String] })
   directors: string[];
 
@@ -50,11 +74,17 @@ export class Movie {
   @Prop({ required: true })
   rated: string;
 
-  @ApiProperty({ example: { wins: 5, nominations: 10 }, description: 'Prêmios do filme' })
+  @ApiProperty({
+    example: { wins: 5, nominations: 10 },
+    description: 'Prêmios do filme',
+  })
   @Prop({ required: true, type: Object })
   awards: object;
 
-  @ApiProperty({ example: '2023-05-30 10:00:00', description: 'Data da última atualização do filme' })
+  @ApiProperty({
+    example: '2023-05-30 10:00:00',
+    description: 'Data da última atualização do filme',
+  })
   @Prop({ required: true })
   lastupdated: string;
 
@@ -62,11 +92,17 @@ export class Movie {
   @Prop({ required: true })
   year: number;
 
-  @ApiProperty({ example: { rating: 7.5, votes: 1000 }, description: 'Informações do IMDb do filme' })
+  @ApiProperty({
+    example: { rating: 7.5, votes: 1000 },
+    description: 'Informações do IMDb do filme',
+  })
   @Prop({ required: true, type: Object })
   imdb: object;
 
-  @ApiProperty({ example: ['USA', 'UK'], description: 'Países de origem do filme' })
+  @ApiProperty({
+    example: ['USA', 'UK'],
+    description: 'Países de origem do filme',
+  })
   @Prop({ required: true, type: [String] })
   countries: string[];
 
@@ -74,7 +110,10 @@ export class Movie {
   @Prop({ required: true })
   type: string;
 
-  @ApiProperty({ example: { rating: 6.5, reviews: 50 }, description: 'Informações do Rotten Tomatoes do filme' })
+  @ApiProperty({
+    example: { rating: 6.5, reviews: 50 },
+    description: 'Informações do Rotten Tomatoes do filme',
+  })
   @Prop({ required: true, type: Object })
   tomatoes: object;
 }

@@ -18,14 +18,12 @@ import { MongooseModule } from '@nestjs/mongoose';
     SessionsModule,
     MongooseModule.forFeature([{ name: Session.name, schema: SessionSchema }]),
   ],
-  controllers: [
-    AuthController
-],
+  controllers: [AuthController],
   providers: [
     AuthService,
     JwtStrategy,
-    { provide: Session.name, useFactory: () => SessionSchema }
-],
-  exports: [AuthService]
+    { provide: Session.name, useFactory: () => SessionSchema },
+  ],
+  exports: [AuthService],
 })
 export class AuthModule {}
