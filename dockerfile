@@ -11,4 +11,4 @@ WORKDIR /home/api
 COPY . .
 
 # Exponha a porta em que a API será executada
-EXPOSE 3000
+EXPOSE 3010

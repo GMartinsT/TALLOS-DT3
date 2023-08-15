@@ -15,7 +15,7 @@ describe('UsersController', () => {
           provide: UsersService,
           useValue: {
             findAll: jest.fn().mockResolvedValue([User]),
-            findOne: jest.fn().mockResolvedValue(User),
+            findById: jest.fn().mockResolvedValue(User),
             findByEmail: jest.fn().mockResolvedValue(User),
             create: jest.fn().mockResolvedValue(User),
             update: jest.fn().mockResolvedValue(User),
@@ -48,21 +48,21 @@ describe('UsersController', () => {
     });
   });
 
-  describe('findOne', () => {
+  describe('findById', () => {
     it('deve retornar os dados do usuário', async () => {
       const id = '123id';
-      const result = await usersController.findOne(id);
+      const result = await usersController.findById(id);
       expect(result).toEqual(User);
-      expect(usersService.findOne).toHaveBeenCalledTimes(1);
+      expect(usersService.findById).toHaveBeenCalledTimes(1);
     });
 
     it('deve lançar uma exeção', async () => {
       const id = '123id';
       jest
-        .spyOn(usersService, 'findOne')
+        .spyOn(usersService, 'findById')
         .mockRejectedValueOnce(new Error('!ERRO!'));
 
-      await expect(usersController.findOne(id)).rejects.toThrowError('!ERRO!');
+      await expect(usersController.findById(id)).rejects.toThrowError('!ERRO!');
     });
   });
 

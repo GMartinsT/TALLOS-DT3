@@ -5,8 +5,9 @@ import {
   Get,
   Param,
   Post,
-  Put,
+  Patch,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
@@ -41,8 +42,11 @@ export class UsersController {
     description: 'Usuários não encontrados',
   })
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  async findAll(
+    @Query('page') page = 1,
+    @Query('perPage') perPage = 10,
+  ): Promise<{ data: User[]; count: number }> {
+    return this.usersService.findAll(page, perPage);
   }
 
   @ApiOperation({ summary: 'Listar usuário buscando pelo ID' })
@@ -60,8 +64,13 @@ export class UsersController {
     description: 'Usuário não encontrado',
   })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(id);
+  findById(@Param('id') id: string) {
+    return this.usersService.findById(id);
+  }
+
+  @Get('/email/:email')
+  findOneByEmail(@Param('email') email: string) {
+    return this.usersService.findByEmail(email);
   }
 
   @ApiOperation({ summary: 'Registrar um novo usuário' })
@@ -105,8 +114,9 @@ export class UsersController {
     status: 404,
     description: 'Usuário não encontrado',
   })
-  @Put(':id')
+  @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    console.log(updateUserDto);
     return this.usersService.update(id, updateUserDto);
   }
 
@@ -126,5 +136,20 @@ export class UsersController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);
+  }
+
+  @ApiOperation({ summary: 'Obter a contagem total de usuários' })
+  @ApiResponse({
+    status: 200,
+    description: 'Contagem de usuários obtida com sucesso',
+    type: Number,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Não autorizado',
+  })
+  @Get('count/allusers')
+  async getUserCount(): Promise<number> {
+    return this.usersService.getUserCount();
   }
 }

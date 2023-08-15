@@ -7,6 +7,7 @@ import {
   Param,
   Body,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { TheatersService } from './theaters.service';
 import { Theater } from './schemas/theaters.schema';
@@ -39,8 +40,18 @@ export class TheatersController {
     description: 'Cinemas não encontrados',
   })
   @Get()
-  async findAll(): Promise<Theater[]> {
-    return this.theatersService.findAll();
+  async findAll(
+    @Query('page') page = 1,
+    @Query('perPage') perPage = 10,
+  ): Promise<{
+    data: {
+      _id: string;
+      theaterId: number;
+      location: string;
+    }[];
+    count: number;
+  }> {
+    return this.theatersService.findAll(page, perPage);
   }
 
   @ApiOperation({ summary: 'Listar um cinenema buscando pelo ID' })
@@ -127,5 +138,20 @@ export class TheatersController {
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<Theater> {
     return this.theatersService.remove(id);
+  }
+
+  @ApiOperation({ summary: 'Obter a contagem total de cinemas' })
+  @ApiResponse({
+    status: 200,
+    description: 'Contagem de cinemas obtida com sucesso',
+    type: Number,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Não autorizado',
+  })
+  @Get('count/alltheaters')
+  async getTheatersCount(): Promise<number> {
+    return this.theatersService.getTheatersCount();
   }
 }

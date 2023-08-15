@@ -1,22 +1,38 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  UseGuards,
+  Query,
+} from '@nestjs/common';
 import { CommentService } from './comments.service';
 import { Comment } from './schemas/comments.schema';
 import { CreateCommentDto, UpdateCommentDto } from './dto/comments.dto';
 import { JwtAuthGuard } from '../auth/utils/auth.guard';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { ObjectId } from 'mongoose';
 
 @UseGuards(JwtAuthGuard)
 @Controller('comments')
 @ApiBearerAuth()
 @ApiTags('Comments')
 export class CommentController {
-  constructor(private readonly commentService: CommentService) { }
+  constructor(private readonly commentService: CommentService) {}
 
   @ApiOperation({ summary: 'Registrar um novo comentário' })
   @ApiResponse({
     status: 201,
     description: 'Comentário registrado com sucesso',
-    type: Comment
+    type: Comment,
   })
   @ApiResponse({
     status: 400,
@@ -39,7 +55,7 @@ export class CommentController {
   @ApiResponse({
     status: 200,
     description: 'Comentários retornados com sucesso',
-    type: [Comment]
+    type: [Comment],
   })
   @ApiResponse({
     status: 401,
@@ -50,15 +66,28 @@ export class CommentController {
     description: 'Usuários não encontrados',
   })
   @Get()
-  findAll(): Promise<Comment[]> {
-    return this.commentService.findAll();
+  async findAll(
+    @Query('page') page = 1,
+    @Query('perPage') perPage = 10,
+  ): Promise<{
+    data: {
+      _id: string;
+      date: string;
+      email: string;
+      movie_id: ObjectId;
+      name: string;
+      text: string;
+    }[];
+    count: number;
+  }> {
+    return this.commentService.findAll(page, perPage);
   }
 
   @ApiOperation({ summary: 'Listar comentários buscando pelo ID do usuário' })
   @ApiResponse({
     status: 200,
     description: 'Usuário retornado com sucesso',
-    type: [Comment]
+    type: [Comment],
   })
   @ApiResponse({
     status: 401,
@@ -77,7 +106,7 @@ export class CommentController {
   @ApiResponse({
     status: 200,
     description: 'Comentário editado com sucesso',
-    type: Comment
+    type: Comment,
   })
   @ApiResponse({
     status: 400,
@@ -102,7 +131,7 @@ export class CommentController {
   @ApiOperation({ summary: 'Deletar um comentário' })
   @ApiResponse({
     status: 200,
-    description: 'Comentário deletado com sucesso'
+    description: 'Comentário deletado com sucesso',
   })
   @ApiResponse({
     status: 401,
@@ -115,5 +144,20 @@ export class CommentController {
   @Delete(':id')
   remove(@Param('id') id: string): Promise<Comment> {
     return this.commentService.remove(id);
+  }
+
+  @ApiOperation({ summary: 'Obter a contagem total de comentários' })
+  @ApiResponse({
+    status: 200,
+    description: 'Contagem de comentários obtida com sucesso',
+    type: Number,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Não autorizado',
+  })
+  @Get('count/allcomments')
+  async getCommentsCount(): Promise<number> {
+    return this.commentService.getCommentsCount();
   }
 }
