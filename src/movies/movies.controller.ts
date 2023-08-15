@@ -69,7 +69,14 @@ export class MoviesController {
     @Query('page') page = 1,
     @Query('perPage') perPage = 10,
   ): Promise<{
-    data: { _id: string; title: string; genres: string; released: string }[];
+    data: {
+      _id: string;
+      title: string;
+      genres: string;
+      released: string;
+      imdb: object;
+      runtime: number;
+    }[];
     count: number;
   }> {
     return this.moviesService.findAll(page, perPage);

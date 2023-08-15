@@ -19,6 +19,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { ObjectId } from 'mongoose';
 
 @UseGuards(JwtAuthGuard)
 @Controller('comments')
@@ -68,7 +69,17 @@ export class CommentController {
   async findAll(
     @Query('page') page = 1,
     @Query('perPage') perPage = 10,
-  ): Promise<Comment[]> {
+  ): Promise<{
+    data: {
+      _id: string;
+      date: string;
+      email: string;
+      movie_id: ObjectId;
+      name: string;
+      text: string;
+    }[];
+    count: number;
+  }> {
     return this.commentService.findAll(page, perPage);
   }
 

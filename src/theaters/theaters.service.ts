@@ -9,9 +9,40 @@ export class TheatersService {
     @InjectModel(Theater.name) private theaterModel: Model<TheaterDocument>,
   ) {}
 
-  async findAll(page = 1, perPage = 10): Promise<Theater[]> {
+  async findAll(
+    page = 1,
+    perPage = 10,
+  ): Promise<{
+    data: {
+      _id: string;
+      theaterId: number;
+      location: string;
+    }[];
+    count: number;
+  }> {
     const skip = (page - 1) * perPage;
-    return this.theaterModel.find().skip(skip).limit(perPage).exec();
+    const data = await this.theaterModel
+      .find()
+      .skip(skip)
+      .limit(perPage)
+      .exec();
+
+    const formattedData = data.map((theater) => ({
+      _id: theater._id,
+      theaterId: theater.theaterId,
+      location: this.formatLoc(theater.location),
+    }));
+
+    const count = await this.getTheatersCount();
+    return {
+      data: formattedData,
+      count,
+    };
+  }
+
+  formatLoc(location): string {
+    const { city, state } = location.address;
+    return `${city}/${state}`;
   }
 
   async findOne(id: string): Promise<Theater> {

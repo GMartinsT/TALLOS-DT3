@@ -84,7 +84,26 @@ export class SessionsController {
   async findAll(
     @Query('page') page = 1,
     @Query('perPage') perPage = 10,
-  ): Promise<Session[]> {
+  ): Promise<{ data: Session[]; count: number }> {
     return this.sessionsService.findAll(page, perPage);
+  }
+
+  @ApiOperation({ summary: 'Listar sessões buscando pelo ID' })
+  @ApiResponse({
+    status: 200,
+    description: 'Sessão retornada com sucesso',
+    type: [Session],
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Não autorizado',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Sessão não encontrado',
+  })
+  @Get(':id')
+  findOne(@Param('id') user_id: string): Promise<Session> {
+    return this.sessionsService.findOne(user_id);
   }
 }

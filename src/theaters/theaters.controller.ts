@@ -43,7 +43,14 @@ export class TheatersController {
   async findAll(
     @Query('page') page = 1,
     @Query('perPage') perPage = 10,
-  ): Promise<Theater[]> {
+  ): Promise<{
+    data: {
+      _id: string;
+      theaterId: number;
+      location: string;
+    }[];
+    count: number;
+  }> {
     return this.theatersService.findAll(page, perPage);
   }
 

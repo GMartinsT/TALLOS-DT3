@@ -14,12 +14,22 @@ export class MoviesService {
     page = 1,
     perPage = 10,
   ): Promise<{
-    data: { _id: string; title: string; genres: string; released: string }[];
+    data: {
+      _id: string;
+      title: string;
+      genres: string;
+      released: string;
+      imdb: object;
+      runtime: number;
+    }[];
     count: number;
   }> {
     const skip = (page - 1) * perPage;
     const data = await this.movieModel
-      .find({}, { _id: 1, title: 1, genres: 1, released: 1 })
+      .find(
+        {},
+        { _id: 1, title: 1, genres: 1, released: 1, imdb: 1, runtime: 1 },
+      )
       .sort({ released: -1 })
       .skip(skip)
       .limit(perPage)
@@ -30,6 +40,8 @@ export class MoviesService {
       title: movie.title,
       genres: this.translateGenres(movie.genres),
       released: this.formatDate(movie.released),
+      imdb: movie.imdb,
+      runtime: movie.runtime,
     }));
 
     const count = await this.getMoviesCount();
