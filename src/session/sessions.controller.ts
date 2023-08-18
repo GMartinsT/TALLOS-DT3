@@ -102,8 +102,25 @@ export class SessionsController {
     status: 404,
     description: 'Sessão não encontrado',
   })
-  @Get(':id')
-  findOne(@Param('id') user_id: string): Promise<Session> {
-    return this.sessionsService.findOne(user_id);
+  @Get('/id/:id')
+  findById(@Param('id') id: string): Promise<Session> {
+    return this.sessionsService.findById(id);
+  }
+
+  @Get('search')
+  async search(
+    @Query('page') page = 1,
+    @Query('perPage') perPage = 10,
+    @Query('searchType') searchType: string,
+    @Query('searchQuery') searchQuery: string,
+  ): Promise<{ data: Session[]; count: number }> {
+    const searchResult = await this.sessionsService.searchSessions(
+      page,
+      perPage,
+      searchType,
+      searchQuery,
+    );
+    console.log('CONTROLLER', searchResult, searchType, searchQuery);
+    return searchResult;
   }
 }

@@ -12,7 +12,7 @@ describe('CommentService', () => {
           provide: CommentService,
           useValue: {
             findAll: jest.fn().mockResolvedValue([Comment]),
-            findOne: jest.fn().mockResolvedValue(Comment),
+            findCommentById: jest.fn().mockResolvedValue(Comment),
             findByEmail: jest.fn().mockResolvedValue(Comment),
             create: jest.fn().mockResolvedValue(Comment),
             update: jest.fn().mockResolvedValue(Comment),
@@ -44,21 +44,23 @@ describe('CommentService', () => {
     });
   });
 
-  describe('findOne', () => {
+  describe('findCommentById', () => {
     it('deve retornar os dados de um comntário', async () => {
       const id = '123id';
-      const result = await commentService.findOne(id);
+      const result = await commentService.findCommentById(id);
       expect(result).toEqual(Comment);
-      expect(commentService.findOne).toHaveBeenCalledTimes(1);
+      expect(commentService.findCommentById).toHaveBeenCalledTimes(1);
     });
 
     it('deve lançar uma exeção', async () => {
       const id = '123id';
       jest
-        .spyOn(commentService, 'findOne')
+        .spyOn(commentService, 'findCommentById')
         .mockRejectedValueOnce(new Error('!ERRO!'));
 
-      await expect(commentService.findOne(id)).rejects.toThrowError('!ERRO!');
+      await expect(commentService.findCommentById(id)).rejects.toThrowError(
+        '!ERRO!',
+      );
     });
   });
 

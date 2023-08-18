@@ -41,12 +41,37 @@ export class UsersController {
     status: 404,
     description: 'Usuários não encontrados',
   })
+  // @Get()
+  // async findAll(
+  //   @Query('page') page = 1,
+  //   @Query('perPage') perPage = 10,
+  //   @Query('search') search = '',
+  // ): Promise<{ data: User[]; count: number }> {
+  //   return this.usersService.findAll(page, perPage, search);
+  // }
   @Get()
   async findAll(
     @Query('page') page = 1,
     @Query('perPage') perPage = 10,
   ): Promise<{ data: User[]; count: number }> {
     return this.usersService.findAll(page, perPage);
+  }
+
+  @Get('search')
+  async search(
+    @Query('page') page = 1,
+    @Query('perPage') perPage = 10,
+    @Query('searchType') searchType: string,
+    @Query('searchQuery') searchQuery: string,
+  ): Promise<{ data: User[]; count: number }> {
+    const searchResult = await this.usersService.searchUsers(
+      page,
+      perPage,
+      searchType,
+      searchQuery,
+    );
+    console.log('CONTROLLER', searchResult, searchType, searchQuery);
+    return searchResult;
   }
 
   @ApiOperation({ summary: 'Listar usuário buscando pelo ID' })
@@ -63,7 +88,7 @@ export class UsersController {
     status: 404,
     description: 'Usuário não encontrado',
   })
-  @Get(':id')
+  @Get('/id/:id')
   findById(@Param('id') id: string) {
     return this.usersService.findById(id);
   }

@@ -21,6 +21,54 @@ export class UsersService {
       count,
     };
   }
+  // async findAll(
+  //   page = 1,
+  //   perPage = 10,
+  //   searchQuery = '',
+  // ): Promise<{ data: User[]; count: number }> {
+  //   const skip = (page - 1) * perPage;
+  //   const filterColumns = ['name', 'email'].map((column) => ({
+  //     [column]: searchQuery,
+  //   }));
+  //   const data = await this.userModel
+  //     .find({ $or: [filterColumns] })
+  //     .skip(skip)
+  //     .limit(perPage)
+  //     .exec();
+  //   const count = await this.getUserCount();
+  //   return {
+  //     data,
+  //     count,
+  //   };
+  // }
+
+  async searchUsers(
+    page = 1,
+    perPage = 10,
+    searchType: string,
+    searchQuery: string,
+  ): Promise<{ data: User[]; count: number }> {
+    const filter = {};
+
+    if (searchType === 'name') {
+      filter['name'] = { $regex: searchQuery, $options: 'i' };
+    } else if (searchType === 'email') {
+      filter['email'] = { $regex: searchQuery, $options: 'i' };
+    }
+
+    const skip = (page - 1) * perPage;
+    const result = await this.userModel
+      .find(filter)
+      .skip(skip)
+      .limit(perPage)
+      .exec();
+    const count = await this.getUserCount();
+    console.log('SERVICE', filter, searchQuery);
+    return {
+      data: result,
+      count,
+    };
+  }
 
   async findByEmail(email: string) {
     console.log(email);

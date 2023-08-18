@@ -37,7 +37,7 @@ export class SessionsService {
     };
   }
 
-  async findOne(id: string): Promise<Session> {
+  async findById(id: string): Promise<Session> {
     return this.sessionModel.findById(id).exec();
   }
 
@@ -55,5 +55,28 @@ export class SessionsService {
 
   async getSessionCount(): Promise<number> {
     return this.sessionModel.countDocuments().exec();
+  }
+
+  async searchSessions(
+    page = 1,
+    perPage = 10,
+    searchType: string,
+    searchQuery: string,
+  ): Promise<{ data: Session[]; count: number }> {
+    const filter = {};
+    filter['user_id'] = searchQuery;
+
+    const skip = (page - 1) * perPage;
+    const result = await this.sessionModel
+      .find(filter)
+      .skip(skip)
+      .limit(perPage)
+      .exec();
+    const count = await this.getSessionCount();
+    console.log('SERVICE', filter, searchQuery);
+    return {
+      data: result,
+      count,
+    };
   }
 }

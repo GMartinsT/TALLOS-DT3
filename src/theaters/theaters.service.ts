@@ -67,4 +67,71 @@ export class TheatersService {
   async getTheatersCount(): Promise<number> {
     return this.theaterModel.countDocuments().exec();
   }
+
+  async searchTheaters(
+    page = 1,
+    perPage = 10,
+    searchType: string,
+    searchQuery: string | number,
+  ): Promise<{
+    data: {
+      _id: string;
+      theaterId: number;
+      location: string;
+    }[];
+    count: number;
+  }> {
+    const filter = {};
+
+    if (searchType === 'theaterId') {
+      filter['theaterId'] = searchQuery;
+    } else if (searchType === 'location') {
+      filter['location.address.city'] = { $regex: searchQuery, $options: 'i' };
+    }
+
+    const skip = (page - 1) * perPage;
+    const result = await this.theaterModel
+      .find(filter)
+      .skip(skip)
+      .limit(perPage)
+      .exec();
+
+    const formattedData = result.map((theater) => ({
+      _id: theater._id,
+      theaterId: theater.theaterId,
+      location: this.formatLoc(theater.location),
+    }));
+
+    const count = await this.getTheatersCount();
+
+    return {
+      data: formattedData,
+      count,
+    };
+  }
+
+  async searchById(id: string): Promise<{
+    data: {
+      _id: string;
+      theaterId: number;
+      location: string;
+    }[];
+    count: number;
+  }> {
+    const result = await this.theaterModel.findById(id).exec();
+    console.log('SERVICE1', result);
+
+    const formattedData = [result].map((theater) => ({
+      _id: theater._id,
+      theaterId: theater.theaterId,
+      location: this.formatLoc(theater.location),
+    }));
+    console.log('SERVICE2', result, formattedData);
+    const count = await this.getTheatersCount();
+    console.log('SERVICE3', result, formattedData);
+    return {
+      data: formattedData,
+      count,
+    };
+  }
 }

@@ -97,9 +97,9 @@ export class CommentController {
     status: 404,
     description: 'Comentários] não encontrado',
   })
-  @Get(':id')
-  findOne(@Param('id') user_id: string): Promise<Comment> {
-    return this.commentService.findOne(user_id);
+  @Get('/id/:id')
+  findCommentById(@Param('id') id: string): Promise<Comment> {
+    return this.commentService.findCommentById(id);
   }
 
   @ApiOperation({ summary: 'Editar um comentário' })
@@ -159,5 +159,49 @@ export class CommentController {
   @Get('count/allcomments')
   async getCommentsCount(): Promise<number> {
     return this.commentService.getCommentsCount();
+  }
+
+  @Get('search')
+  async search(
+    @Query('page') page = 1,
+    @Query('perPage') perPage = 10,
+    @Query('searchType') searchType: string,
+    @Query('searchQuery') searchQuery: string,
+  ): Promise<{
+    data: {
+      _id: string;
+      name: string;
+      email: string;
+      movie_id: string;
+      text: string;
+      date: string;
+    }[];
+    count: number;
+  }> {
+    const searchResult = await this.commentService.searchComments(
+      page,
+      perPage,
+      searchType,
+      searchQuery,
+    );
+    console.log('CONTROLLER', searchResult, searchType, searchQuery);
+    return searchResult;
+  }
+
+  @Get('searchId/:id')
+  async searchById(@Param('id') id: string): Promise<{
+    data: {
+      _id: string;
+      name: string;
+      email: string;
+      movie_id: string;
+      text: string;
+      date: string;
+    }[];
+    count: number;
+  }> {
+    const searchResult = await this.commentService.searchById(id);
+    console.log('CONTROLLER', searchResult, id);
+    return searchResult;
   }
 }
