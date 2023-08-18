@@ -111,4 +111,92 @@ export class MoviesService {
   async getMoviesCount(): Promise<number> {
     return this.movieModel.countDocuments().exec();
   }
+
+  async searchMovies(
+    page = 1,
+    perPage = 10,
+    searchType: string,
+    searchQuery: string,
+  ): Promise<{
+    data: {
+      _id: string;
+      title: string;
+      genres: string;
+      released: string;
+    }[];
+    count: number;
+  }> {
+    const filter = {};
+
+    if (searchType === 'title') {
+      filter['title'] = { $regex: searchQuery, $options: 'i' };
+    } else if (searchType === 'genres') {
+      filter['genres'] = { $regex: searchQuery, $options: 'i' };
+    } else if (searchType === 'released') {
+      const [day, month, year] = searchQuery.split('/');
+      const dateObject = new Date(`${year}-${month}-${day}T00:00:00Z`);
+      const isoFormattedDate = dateObject.toISOString();
+      filter['released'] = isoFormattedDate;
+    }
+    const skip = (page - 1) * perPage;
+    const result = await this.movieModel
+      .find(filter, {
+        _id: 1,
+        title: 1,
+        genres: 1,
+        released: 1,
+      })
+      .sort({ released: -1 })
+      .skip(skip)
+      .limit(perPage)
+      .exec();
+    console.log(result);
+    const count = await this.getMoviesCount();
+    const formattedData = result.map((movie) => ({
+      _id: movie._id,
+      title: movie.title,
+      genres: this.translateGenres(movie.genres),
+      released: this.formatDate(movie.released),
+    }));
+    console.log(formattedData);
+    console.log('SERVICE', filter, searchQuery);
+    return {
+      data: formattedData,
+      count,
+    };
+  }
+
+  async searchById(searchQuery: string): Promise<{
+    data: {
+      _id: string;
+      title: string;
+      genres: string;
+      released: string;
+    }[];
+    count: number;
+  }> {
+    const data = [
+      await this.movieModel
+        .findById(searchQuery, {
+          _id: 1,
+          title: 1,
+          genres: 1,
+          released: 1,
+        })
+        .exec(),
+    ];
+
+    const formattedData = data.map((movie) => ({
+      _id: movie._id,
+      title: movie.title,
+      genres: this.translateGenres(movie.genres),
+      released: this.formatDate(movie.released),
+    }));
+
+    const count = await this.getMoviesCount();
+    return {
+      data: formattedData,
+      count,
+    };
+  }
 }

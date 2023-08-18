@@ -96,7 +96,7 @@ export class MoviesController {
     status: 404,
     description: 'Filme não encontrado',
   })
-  @Get(':id')
+  @Get('/id/:id')
   findMovieById(@Param('id') id: string): Promise<Movie> {
     return this.moviesService.findById(id);
   }
@@ -158,5 +158,45 @@ export class MoviesController {
   @Get('count/allmovies')
   async getMoviesCount(): Promise<number> {
     return this.moviesService.getMoviesCount();
+  }
+
+  @Get('search')
+  async search(
+    @Query('page') page = 1,
+    @Query('perPage') perPage = 10,
+    @Query('searchType') searchType: string,
+    @Query('searchQuery') searchQuery: string,
+  ): Promise<{
+    data: {
+      _id: string;
+      title: string;
+      genres: string;
+      released: string;
+    }[];
+    count: number;
+  }> {
+    const searchResult = await this.moviesService.searchMovies(
+      page,
+      perPage,
+      searchType,
+      searchQuery,
+    );
+    console.log('CONTROLLER', searchResult, searchType, searchQuery);
+    return searchResult;
+  }
+
+  @Get('searchId/:id')
+  async searchById(@Param('id') id: string): Promise<{
+    data: {
+      _id: string;
+      title: string;
+      genres: string;
+      released: string;
+    }[];
+    count: number;
+  }> {
+    const searchResult = await this.moviesService.searchById(id);
+    console.log('CONTROLLER', searchResult, id);
+    return searchResult;
   }
 }

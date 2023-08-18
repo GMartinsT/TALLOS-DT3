@@ -68,7 +68,7 @@ export class TheatersController {
     status: 404,
     description: 'Cinema não encontrados',
   })
-  @Get(':id')
+  @Get('/id/:id')
   async findOne(@Param('id') id: string): Promise<Theater> {
     return this.theatersService.findOne(id);
   }
@@ -153,5 +153,43 @@ export class TheatersController {
   @Get('count/alltheaters')
   async getTheatersCount(): Promise<number> {
     return this.theatersService.getTheatersCount();
+  }
+
+  @Get('search')
+  async search(
+    @Query('page') page = 1,
+    @Query('perPage') perPage = 10,
+    @Query('searchType') searchType: string,
+    @Query('searchQuery') searchQuery: string,
+  ): Promise<{
+    data: {
+      _id: string;
+      theaterId: number;
+      location: string;
+    }[];
+    count: number;
+  }> {
+    const searchResult = await this.theatersService.searchTheaters(
+      page,
+      perPage,
+      searchType,
+      searchQuery,
+    );
+    console.log('CONTROLLER', searchResult, searchType, searchQuery);
+    return searchResult;
+  }
+
+  @Get('/searchId/:id')
+  async searchById(@Param('id') id: string): Promise<{
+    data: {
+      _id: string;
+      theaterId: number;
+      location: string;
+    }[];
+    count: number;
+  }> {
+    const searchResult = await this.theatersService.searchById(id);
+    console.log('CONTROLLER', searchResult);
+    return searchResult;
   }
 }

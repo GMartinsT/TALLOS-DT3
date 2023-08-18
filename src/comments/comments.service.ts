@@ -59,7 +59,7 @@ export class CommentService {
     return `${day}/${month}/${year}`;
   }
 
-  async findOne(id: string): Promise<Comment> {
+  async findCommentById(id: string): Promise<Comment> {
     return this.commentModel.findById(id).exec();
   }
 
@@ -78,5 +78,112 @@ export class CommentService {
 
   async getCommentsCount(): Promise<number> {
     return this.commentModel.countDocuments().exec();
+  }
+
+  async searchComments(
+    page = 1,
+    perPage = 10,
+    searchType: string,
+    searchQuery: string,
+  ): Promise<{
+    data: {
+      _id: string;
+      name: string;
+      email: string;
+      movie_id: string;
+      text: string;
+      date: string;
+    }[];
+    count: number;
+  }> {
+    const filter = {};
+
+    if (searchType === 'name') {
+      filter['name'] = { $regex: searchQuery, $options: 'i' };
+    } else if (searchType === 'email') {
+      filter['email'] = { $regex: searchQuery, $options: 'i' };
+    } else if (searchType === 'movie_id') {
+      filter['movie_id'] = searchQuery;
+    } else if (searchType === 'date') {
+      const [day, month, year] = searchQuery.split('/');
+      const isoFormattedDate = `${year}-${month}-${day}T00:00:00.000Z`;
+      const startDate = new Date(
+        Date.UTC(parseInt(year), parseInt(month) - 1, parseInt(day)),
+      );
+      const endDate = new Date(
+        Date.UTC(parseInt(year), parseInt(month) - 1, parseInt(day) + 1),
+      );
+      filter['date'] = { $gte: startDate, $lt: endDate };
+      console.log('DATEEEE', isoFormattedDate, filter);
+    }
+    const skip = (page - 1) * perPage;
+    const result = await this.commentModel
+      .find(filter, {
+        _id: 1,
+        name: 1,
+        email: 1,
+        movie_id: 1,
+        text: 1,
+        date: 1,
+      })
+      .skip(skip)
+      .limit(perPage)
+      .exec();
+    console.log('RESULT', result);
+    const count = await this.getCommentsCount();
+    const formattedData = result.map((comment) => ({
+      _id: comment._id,
+      name: comment.name,
+      email: comment.email,
+      movie_id: comment.movie_id.toString(),
+      text: comment.text,
+      date: this.formatDate(comment.date),
+    }));
+    console.log('DATA FORMATADA', formattedData);
+    console.log('SERVICE', filter, searchQuery);
+    return {
+      data: formattedData,
+      count,
+    };
+  }
+
+  async searchById(searchQuery: string): Promise<{
+    data: {
+      _id: string;
+      name: string;
+      email: string;
+      movie_id: string;
+      text: string;
+      date: string;
+    }[];
+    count: number;
+  }> {
+    const data = [
+      await this.commentModel
+        .findById(searchQuery, {
+          _id: 1,
+          name: 1,
+          email: 1,
+          movie_id: 1,
+          text: 1,
+          date: 1,
+        })
+        .exec(),
+    ];
+
+    const formattedData = data.map((comment) => ({
+      _id: comment._id,
+      name: comment.name,
+      email: comment.email,
+      movie_id: comment.movie_id.toString(),
+      text: comment.text,
+      date: this.formatDate(comment.date),
+    }));
+
+    const count = await this.getCommentsCount();
+    return {
+      data: formattedData,
+      count,
+    };
   }
 }
