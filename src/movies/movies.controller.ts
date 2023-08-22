@@ -7,6 +7,7 @@ import {
   Param,
   Body,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { MoviesService } from './movies.service';
 import { CreateMovieDto, UpdateMovieDto } from './dto/movies.dto';
@@ -64,8 +65,21 @@ export class MoviesController {
     description: 'Usuários não encontrados',
   })
   @Get()
-  findAllMovies(): Promise<Movie[]> {
-    return this.moviesService.findAll();
+  async findAllMovies(
+    @Query('page') page = 1,
+    @Query('perPage') perPage = 10,
+  ): Promise<{
+    data: {
+      _id: string;
+      title: string;
+      genres: string;
+      released: string;
+      imdb: object;
+      runtime: number;
+    }[];
+    count: number;
+  }> {
+    return this.moviesService.findAll(page, perPage);
   }
 
   @ApiOperation({ summary: 'Listar um filme buscando pelo ID' })
@@ -82,7 +96,7 @@ export class MoviesController {
     status: 404,
     description: 'Filme não encontrado',
   })
-  @Get(':id')
+  @Get('/id/:id')
   findMovieById(@Param('id') id: string): Promise<Movie> {
     return this.moviesService.findById(id);
   }
@@ -129,5 +143,60 @@ export class MoviesController {
   @Delete(':id')
   deleteMovie(@Param('id') id: string): Promise<Movie> {
     return this.moviesService.delete(id);
+  }
+
+  @ApiOperation({ summary: 'Obter a contagem total de filmes' })
+  @ApiResponse({
+    status: 200,
+    description: 'Contagem de filmes obtida com sucesso',
+    type: Number,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Não autorizado',
+  })
+  @Get('count/allmovies')
+  async getMoviesCount(): Promise<number> {
+    return this.moviesService.getMoviesCount();
+  }
+
+  @Get('search')
+  async search(
+    @Query('page') page = 1,
+    @Query('perPage') perPage = 10,
+    @Query('searchType') searchType: string,
+    @Query('searchQuery') searchQuery: string,
+  ): Promise<{
+    data: {
+      _id: string;
+      title: string;
+      genres: string;
+      released: string;
+    }[];
+    count: number;
+  }> {
+    const searchResult = await this.moviesService.searchMovies(
+      page,
+      perPage,
+      searchType,
+      searchQuery,
+    );
+    console.log('CONTROLLER', searchResult, searchType, searchQuery);
+    return searchResult;
+  }
+
+  @Get('searchId/:id')
+  async searchById(@Param('id') id: string): Promise<{
+    data: {
+      _id: string;
+      title: string;
+      genres: string;
+      released: string;
+    }[];
+    count: number;
+  }> {
+    const searchResult = await this.moviesService.searchById(id);
+    console.log('CONTROLLER', searchResult, id);
+    return searchResult;
   }
 }
