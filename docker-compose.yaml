@@ -13,6 +13,4 @@ services:
       - movies
     volumes:
       - .:/home/api
-networks:
-  movies:
-    external: true
+
