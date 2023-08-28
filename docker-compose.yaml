@@ -4,7 +4,7 @@ services:
   api:
     build: .
     entrypoint: sh ./.docker/entrypoint.sh
-    container_name: moviesdt3-api
+    container_name: tallosflix-api
     ports:
       - 3010:3010
     restart: always
@@ -13,4 +13,6 @@ services:
       - movies
     volumes:
       - .:/home/api
-
+networks:
+   movies:
+     external: true
